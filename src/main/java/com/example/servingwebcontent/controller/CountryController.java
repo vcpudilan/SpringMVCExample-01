@@ -45,7 +45,7 @@ public class CountryController {
 		List<CountryEntity> kuni = mapper.select(SelectDSLCompleter.allRows());
 		
 		model.addAttribute(names, kuni);
-		return "countrySelect";
+		return "country/countrySelect";
 	}
 
 	/**
@@ -75,10 +75,6 @@ public class CountryController {
 	@ResponseBody
 	public String addCustomer(@Validated CountryForm countryForm) {
 
-//		if (bindingResult.hasErrors()) {
-//            return "countryList2";
-//        }
-
 		CountryEntity countryEntity = new CountryEntity();
 		
 		countryEntity.setMstcountrycd(countryForm.getMstcountrycd());
@@ -89,36 +85,28 @@ public class CountryController {
 		return "添加成功";
 	}
 	
-	@PostMapping("/country/loginCountry")
+	// 更新场合
+	@PostMapping("/country/updCountry")
 	@ResponseBody
-	public String updCountry(@Validated CountrySearchForm cuntrySearchForm) {
-
-//		if (bindingResult.hasErrors()) {
-//            return "countryList2";
-//        }
+	public String updCountry(@Validated CountryForm countryForm) {
 
 		CountryEntity countryEntity = new CountryEntity();
-//		
-//		countryEntity.setMstcountrycd(countryForm.getMstcountrycd());
-//		countryEntity.setMstcountrynanme(countryForm.getMstcountrynanme());
 		
-		mapper.insert(countryEntity);
+		countryEntity.setMstcountrycd(countryForm.getMstcountrycd());
+		countryEntity.setMstcountrynanme(countryForm.getMstcountrynanme());
 		
-		return "添加成功";
+		mapper.updateByPrimaryKey(countryEntity);
+		
+		return "更新成功";
 	}
 	
-
-//	/*
-//	 * 创建一个方法，监听/country/createCountry，
-//	 * 实现根据请求的参数创建一个CountryEntity对象，并将其插入到数据库中。
-//	 */
-//	@PostMapping("/country/createCountry")
-//	@ResponseBody
-//	public String createCountry(@RequestBody CountryEntity countryEntity) {
-//		// Method body goes here
-//		// For example, you might save the countryEntity to the database
-//		// Then return a success message or the saved entity
-//		return "Country created successfully";
-//	}
-
+	//删除场合
+	@PostMapping("/country/delCountry")
+	@ResponseBody
+	public String delCountry(@Validated CountryForm countryForm) {
+		
+		mapper.deleteByPrimaryKey(countryForm.getMstcountrycd());
+		
+		return "更新成功";
+	}
 }
