@@ -65,7 +65,6 @@ public class CountryController2 {
 		countryForm.setMstcountrycd("");
 		countryForm.setMstcountrynanme("");
 		
-		
 		return "添加成功";
 	}
 

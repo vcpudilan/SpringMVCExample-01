@@ -62,7 +62,7 @@
                                 <input type="text" class="form-control" id="queryInput" th:field="*{mstCountryCD}">
                             </div>
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                <button id="queryBtn" type="button" class="btn btn-primary me-md-2">查询</button>
+                                <button id="queryBtn" type="button" class="btn btn-primary me-md-2">更新</button>
                                 <button type="clearBtb" class="btn btn-secondary ">清空</button>
                             </div>
                         </form>
@@ -86,17 +86,17 @@
             <div class="collapse show" id="collapseDetail">
                 <div class="card card-body">
                     <!-- th:object -->
-                    <form id="frmDetail" action="#" method="post">
+                    <form id="frmDetail" action="#" th:object="${countryForm}" method="post">
                         <div class="mb-3">
                             <label for="countryCodeInput" class="form-label">Email address</label>
-                            <input type="text" class="form-control" id="countryCodeInput" placeholder="country code">
+                            <input type="text" class="form-control" th:field="*{mstcountrycd}" id="countryCodeInput" placeholder="country code">
                         </div>
                         <div class="mb-3">
                             <label for="countryNameInput" class="form-label">Example textarea</label>
-                            <input type="text" class="form-control" id="countryNameInput"></input>
+                            <input type="text" class="form-control" id="countryNameInput" th:field="*{mstcountrynanme}"></input>
                         </div>
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <button id="updateBtn" type="button" class="btn btn-primary me-md-2">更新</button>
+                            <button id="updateBtn" type="button" class="btn btn-primary me-md-2">登录</button>
                             <button id="returnBtn" type="button" class="btn btn-secondary ">返回</button>
                         </div>
                     </form>

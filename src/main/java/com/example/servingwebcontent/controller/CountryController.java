@@ -1,10 +1,14 @@
 package com.example.servingwebcontent.controller;
 
+import java.util.List;
 import java.util.Optional;
 
+import org.mybatis.dynamic.sql.select.SelectDSLCompleter;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.example.servingwebcontent.entity.CountryEntity;
+import com.example.servingwebcontent.form.CountryForm;
 import com.example.servingwebcontent.form.CountrySearchForm;
 import com.example.servingwebcontent.repository.CountryEntityMapper;
 import com.google.gson.Gson;
@@ -25,9 +30,22 @@ public class CountryController {
 	private CountryEntityMapper mapper;
 
 	@GetMapping("/country")
-	public String init(CountrySearchForm countrySearchForm) {
+	public String init(Model model) {
 
+		model.addAttribute("countrySearchForm",new CountrySearchForm());
+		model.addAttribute("countryForm",new CountryForm());
+		
 		return "country/country";
+	}
+	
+	
+	@GetMapping("/countrySelect")
+	public String list(Model model) {
+		String names = "kunis";
+		List<CountryEntity> kuni = mapper.select(SelectDSLCompleter.allRows());
+		
+		model.addAttribute(names, kuni);
+		return "countrySelect";
 	}
 
 	/**
@@ -52,18 +70,55 @@ public class CountryController {
 
 		return new Gson().toJson(countryEntity.get());
 	}
-
-	/*
-	 * 创建一个方法，监听/country/createCountry，
-	 * 实现根据请求的参数创建一个CountryEntity对象，并将其插入到数据库中。
-	 */
-	@PostMapping("/country/createCountry")
+	
+	@PostMapping("/country/loginCountry")
 	@ResponseBody
-	public String createCountry(@RequestBody CountryEntity countryEntity) {
-		// Method body goes here
-		// For example, you might save the countryEntity to the database
-		// Then return a success message or the saved entity
-		return "Country created successfully";
+	public String addCustomer(@Validated CountryForm countryForm) {
+
+//		if (bindingResult.hasErrors()) {
+//            return "countryList2";
+//        }
+
+		CountryEntity countryEntity = new CountryEntity();
+		
+		countryEntity.setMstcountrycd(countryForm.getMstcountrycd());
+		countryEntity.setMstcountrynanme(countryForm.getMstcountrynanme());
+		
+		mapper.insert(countryEntity);
+		
+		return "添加成功";
 	}
+	
+	@PostMapping("/country/loginCountry")
+	@ResponseBody
+	public String updCountry(@Validated CountrySearchForm cuntrySearchForm) {
+
+//		if (bindingResult.hasErrors()) {
+//            return "countryList2";
+//        }
+
+		CountryEntity countryEntity = new CountryEntity();
+//		
+//		countryEntity.setMstcountrycd(countryForm.getMstcountrycd());
+//		countryEntity.setMstcountrynanme(countryForm.getMstcountrynanme());
+		
+		mapper.insert(countryEntity);
+		
+		return "添加成功";
+	}
+	
+
+//	/*
+//	 * 创建一个方法，监听/country/createCountry，
+//	 * 实现根据请求的参数创建一个CountryEntity对象，并将其插入到数据库中。
+//	 */
+//	@PostMapping("/country/createCountry")
+//	@ResponseBody
+//	public String createCountry(@RequestBody CountryEntity countryEntity) {
+//		// Method body goes here
+//		// For example, you might save the countryEntity to the database
+//		// Then return a success message or the saved entity
+//		return "Country created successfully";
+//	}
 
 }
